@@ -41,6 +41,8 @@ angular.module('yourModule', ['angular-lfmo'])
   }]);
 ```
 
+Visit [this plunker](http://plnkr.co/edit/D7mJ5CsiKMqEtM0ROxtT?p=preview) for a complete example.
+
 ## Factory Functions:
 
 - `define(name)`: returns a model
