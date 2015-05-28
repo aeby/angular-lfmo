@@ -16,7 +16,7 @@ module.exports = function (grunt) {
   var pkg = grunt.file.readJSON('package.json');
   var banner = '/*!\n' +
     '* angular-lfmo\n' +
-    '* @version <%= pkg.version %> - Homepage <>\n' +
+    '* @version <%= pkg.version %>\n' +
     '* @author Reto Aebersold <aeby@substyle.ch>\n' +
     '* @copyright (c) 2015 Reto Aebersold <https://github.com/aeby/>\n' +
     '* @license MIT <https://github.com/aeby/angular-lfmo/blob/master/LICENSE>\n' +
