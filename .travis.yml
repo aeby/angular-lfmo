@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '0.12'
+before_install:
+- npm config set spin false
+- npm install -g bower
+- bower install
+deploy:
+  provider: npm
+  email: aeby@substyle.ch
+  api_key:
+    secure: ZmU3bBiv0Ia5EoIomzJjPCj7bR5RGnt1kY5RyBKsv/XeVuGV2XWBfNCc+amAFSnOjhfMxeyQWiKg4pLxxroNOydx/WugJSYGeIOLQQgkVQgXZ2z/sEgI7CBbZT7gEFXASrFuzM/nL1jvO1zvWeD1xQIGtVhWLqO3hdmyVc4FlN4PVxXcYa5MqeSR3f+NfmCa+wGaeqWOVVN6hZJchw89mYQgjZ5KPM3MCT0GzdNf5bY5VZ7YOeKXXWhVhPwIXTl5A2zx2DS46mgwwRd95onYlk5qXPULnBwIfuEJAQnIwc7J3fHFkLibeRhtaUxCU9SyrNu7ez1UvZ6Wt6FCwx+CHrtLEwclS14auUbZCS0k2W6D91KCFvR3bE3RnVZV/5idtPvQh3fzFcdeygT7CeE8ZFBroOqvshSsNF1nvtOvmI9iGl6Cui9qsVHC6MYcR5yLaPBfQAMbfC22XBRV/K21k4OM12HodStYHSsXAcu/r9fha3M0dB0MrKmQ/4QwyfaOAnoNFkJsKpuhxuOG9Sq0FnKx1tfNUIYSJ8zqPf5n1yX7vgG+31GZK1jqAKlA9r2eYO5l3dmp9d4XfD9ZTtWjvlV4S9TsnRqDBzMUff1TPLLjxnsw9yirwTlgpmdTmioTTLHRIysqS+X2vhnSfkq5lx8PtTArcTaiRlFQRLzxiqE=
+  on:
+    tags: true
+    repo: aeby/angular-lfmo
