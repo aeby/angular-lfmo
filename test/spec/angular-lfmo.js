@@ -2,13 +2,15 @@ describe('$lfmo factory', function () {
   'use strict';
 
   var $rootScope,
-    $lfmo;
+    $lfmo,
+    $q;
 
   beforeEach(module('angular-lfmo'));
 
-  beforeEach(inject(function (_$rootScope_, _$lfmo_) {
+  beforeEach(inject(function (_$rootScope_, _$lfmo_, _$q_) {
     $rootScope = _$rootScope_;
     $lfmo = _$lfmo_;
+    $q = _$q_;
   }));
 
   afterEach(function (done) {
@@ -38,12 +40,9 @@ describe('$lfmo factory', function () {
         window.clearInterval(interval);
       };
 
-    beforeEach(function (done) {
+    beforeEach(function () {
       interval = triggerDigests();
       myModel = $lfmo.define('myModel');
-      myModel.indexReady().then(function () {
-        done();
-      });
     });
 
     afterEach(function (done) {
@@ -81,17 +80,17 @@ describe('$lfmo factory', function () {
 
     it('should find model with filter', function (done) {
       var name = 'luuk';
-      myModel.create({name: name, age: 22})
+      $q.all([
+        myModel.create({name: name, age: 22}),
+        myModel.create({name: 'foo', age: 30})
+      ])
         .then(function () {
-          return myModel.create({name: 'foo', age: 30});
-        })
-        .then(function () {
-          return myModel.findAll({age: 22});
-        })
-        .then(function (data) {
-          expect(data.length).toEqual(1);
-          expect(data[0].name).toEqual(name);
-          done();
+          myModel.findAll({age: 22})
+            .then(function (data) {
+              expect(data.length).toEqual(1);
+              expect(data[0].name).toEqual(name);
+              done();
+            });
         });
     });
 

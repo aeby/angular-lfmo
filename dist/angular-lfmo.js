@@ -1,6 +1,6 @@
 /*!
 * angular-lfmo
-* @version 0.1.3
+* @version 0.1.4
 * @author Reto Aebersold <aeby@substyle.ch>
 * @copyright (c) 2015 Reto Aebersold <https://github.com/aeby/>
 * @license MIT <https://github.com/aeby/angular-lfmo/blob/master/LICENSE>
@@ -82,64 +82,50 @@
         return deferred.promise;
       },
 
-      setName: function (modelName) {
+      _loadIndex: function () {
         var _this = this;
+        return _this._getItem(_this.indexName).then(function (index) {
+          if (!_this.index) {
+            _this.index = index || [];
+          }
+          return _this.index;
+        });
+      },
 
+      setName: function (modelName) {
         this.name = modelName;
         this.modelPrefix = modelName + '/';
         this.indexName = 'idx/' + modelName;
         this.lastModified = -1;
-
-        _this.indexPromise = _this._getItem(_this.indexName)
-          .then(function (index) {
-            if (!index) {
-              _this.lastModified = Date.now();
-              return _this._setItem(_this.indexName, []);
-            } else {
-              _this.lastModified = Date.now();
-              return [];
-            }
-          });
-      },
-
-      indexReady: function () {
-        var _this = this;
-
-        return _this.indexPromise;
       },
 
       create: function (data) {
-        var _this = this, saved;
+        var _this = this;
 
         if (!data.id) {
           data.id = uuid4();
         }
 
-        return _this.indexPromise.then(function () {
+        return _this._loadIndex().then(function () {
+          _this.index.push(data.id);
+          _this._setItem(_this.indexName, _this.index);
           return _this._setItem(_this.modelPrefix + data.id, data);
         }).then(function (data) {
-          saved = data;
-          return _this._getItem(_this.indexName);
-        }).then(function (index) {
-          index.push(data.id);
-          return _this._setItem(_this.indexName, index);
-        }).then(function () {
           _this.lastModified = Date.now();
-          return saved;
+          return data;
         });
       },
 
       update: function (id, data) {
         var _this = this;
 
-        return _this.get(id)
-          .then(function (item) {
-            angular.extend(item, data);
-            return _this._setItem(_this.modelPrefix + id, item);
-          }).then(function (item) {
-            _this.lastModified = Date.now();
-            return item;
-          });
+        return _this.get(id).then(function (item) {
+          angular.extend(item, data);
+          return _this._setItem(_this.modelPrefix + id, item);
+        }).then(function (item) {
+          _this.lastModified = Date.now();
+          return item;
+        });
       },
 
       get: function (id) {
@@ -151,41 +137,28 @@
       remove: function (id) {
         var _this = this;
 
-        return _this.indexPromise
-          .then(function () {
-            return _this._removeItem(_this.modelPrefix + id);
-          })
-          .then(function () {
-            return _this._getItem(_this.indexName);
-          })
-          .then(function (index) {
-            index.splice(index.indexOf(id), 1);
-            return _this._setItem(_this.indexName, index);
-          })
-          .then(function () {
-            _this.lastModified = Date.now();
-          });
+        return _this._loadIndex().then(function () {
+          _this.index.splice(_this.index.indexOf(id), 1);
+          return _this._removeItem(_this.modelPrefix + id);
+        }).then(function () {
+          _this.lastModified = Date.now();
+        });
       },
 
       findAll: function (filterExpression) {
         var _this = this;
 
-        return _this.indexPromise
-          .then(function () {
-            return _this._getItem(_this.indexName);
-          })
-          .then(function (index) {
-            var itemGets = [];
-            if (index) {
-              index.forEach(function (id) {
-                itemGets.push(_this.get(id));
-              });
-            }
-            return $q.all(itemGets);
-          })
-          .then(function (items) {
-            return $filter('filter')(items, filterExpression);
-          });
+        return _this._loadIndex().then(function () {
+          var itemGets = [];
+          if (_this.index) {
+            _this.index.forEach(function (id) {
+              itemGets.push(_this.get(id));
+            });
+          }
+          return $q.all(itemGets);
+        }).then(function (items) {
+          return $filter('filter')(items, filterExpression);
+        });
       },
 
       bindAll: function (scope, scopeKey, filterExpression) {
