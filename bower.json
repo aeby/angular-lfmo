@@ -1,0 +1,42 @@
+{
+  "name": "angular-lfmo",
+  "main": "dist/angular-lfmo.js",
+  "version": "0.1.2",
+  "homepage": "",
+  "authors": [
+    "Reto Aebersold <aeby@substyle.ch>"
+  ],
+  "description": "Simple models for localforage.",
+  "keywords": [
+    "localstorage",
+    "local-storage",
+    "localForage",
+    "indexDB",
+    "webSQL",
+    "storage",
+    "module",
+    "angular",
+    "angularJS"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "Gruntfile.js",
+    "package.json",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aeby/angular-lfmo.git"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.x - 1.3.x"
+  },
+  "dependencies": {
+    "localforage": "1.2.3",
+    "angular": "1.2.x - 1.3.x"
+  }
+}
