@@ -14,7 +14,7 @@
 })(this, function (angular, localforage) {
   'use strict';
 
-  angular.module('angular-lfmo', []).factory('$lfmo', function ($filter, $q, $parse) {
+  angular.module('angular-lfmo', ['ng']).factory('$lfmo', function ($filter, $q, $parse) {
 
     function uuid4() {
       var id = '', i;
