@@ -1,9 +1,8 @@
 **/.*
 example/
+bower_components/
 src/
-tests/
+test/
 bower.json
-changelog.js
-gulpfile.js
+Gruntfile.js
 karma.conf.js
-validate-commit-msg.js

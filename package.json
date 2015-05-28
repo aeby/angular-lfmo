@@ -1,6 +1,6 @@
 {
   "name": "angular-lfmo",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Simple models for localforage.",
   "license": "MIT",
   "main": "dist/angular-lfmo.js",

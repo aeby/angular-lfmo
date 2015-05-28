@@ -13,7 +13,7 @@ Angular factory to define simple models for https://github.com/mozilla/localFora
 
 - Bind one entry or a collection to your `$scope`
 
-- Lightweight (3kB) and depends on localForage only
+- Lightweight (2.4kB) and depends on localForage only
 
 ## Usage:
 - Download the project or install via bower `bower install angular-lfmo` or npm `npm install angular-lfmo`

@@ -1,7 +1,7 @@
 {
   "name": "angular-lfmo",
   "main": "dist/angular-lfmo.js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "",
   "authors": [
     "Reto Aebersold <aeby@substyle.ch>"
@@ -23,7 +23,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "tests",
+    "test",
     "Gruntfile.js",
     "package.json",
     "src"

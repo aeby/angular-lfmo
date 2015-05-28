@@ -1,6 +1,6 @@
 /*!
 * angular-lfmo
-* @version 0.1.4
+* @version 0.1.5
 * @author Reto Aebersold <aeby@substyle.ch>
 * @copyright (c) 2015 Reto Aebersold <https://github.com/aeby/>
 * @license MIT <https://github.com/aeby/angular-lfmo/blob/master/LICENSE>
