@@ -1,7 +1,7 @@
 {
   "name": "angular-lfmo",
   "main": "dist/angular-lfmo.js",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "",
   "authors": [
     "Reto Aebersold <aeby@substyle.ch>"
