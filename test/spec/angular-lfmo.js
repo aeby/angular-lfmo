@@ -199,5 +199,18 @@ describe('$lfmo factory', function () {
         done();
       }, 100);
     });
+
+    it('should create and get a model instance with custom id', function (done) {
+      var name = 'luuk', myCustomModel = $lfmo.define('myCustomModel', 'myid');
+      myCustomModel.create({name: name})
+        .then(function (data) {
+          expect(data.myid).toBeDefined();
+          return myCustomModel.get(data.myid);
+        }, done)
+        .then(function (data) {
+          expect(data.name).toEqual(name);
+          done();
+        }, done);
+    });
   });
 });

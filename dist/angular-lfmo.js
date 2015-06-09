@@ -82,9 +82,16 @@
         return deferred.promise;
       },
 
-      _loadIndex: function () {
+      init: function (modelName, idKey) {
         var _this = this;
-        return _this._getItem(_this.indexName).then(function (index) {
+        this.name = modelName;
+        this.idKey = idKey;
+        this.modelPrefix = modelName + '/';
+        this.indexName = 'idx/' + modelName;
+        this.lastModified = -1;
+
+        // load index
+        this.indexPromise = _this._getItem(_this.indexName).then(function (index) {
           if (!_this.index) {
             _this.index = index || [];
           }
@@ -92,24 +99,17 @@
         });
       },
 
-      setName: function (modelName) {
-        this.name = modelName;
-        this.modelPrefix = modelName + '/';
-        this.indexName = 'idx/' + modelName;
-        this.lastModified = -1;
-      },
-
       create: function (data) {
         var _this = this;
 
-        if (!data.id) {
-          data.id = uuid4();
+        if (angular.isUndefined(data[_this.idKey])) {
+          data[_this.idKey] = uuid4();
         }
 
-        return _this._loadIndex().then(function () {
-          _this.index.push(data.id);
+        return _this.indexPromise.then(function () {
+          _this.index.push(data[_this.idKey]);
           _this._setItem(_this.indexName, _this.index);
-          return _this._setItem(_this.modelPrefix + data.id, data);
+          return _this._setItem(_this.modelPrefix + data[_this.idKey], data);
         }).then(function (data) {
           _this.lastModified = Date.now();
           return data;
@@ -137,7 +137,7 @@
       remove: function (id) {
         var _this = this;
 
-        return _this._loadIndex().then(function () {
+        return _this.indexPromise.then(function () {
           _this.index.splice(_this.index.indexOf(id), 1);
           return _this._removeItem(_this.modelPrefix + id);
         }).then(function () {
@@ -148,7 +148,7 @@
       findAll: function (filterExpression) {
         var _this = this;
 
-        return _this._loadIndex().then(function () {
+        return _this.indexPromise.then(function () {
           var itemGets = [];
           if (_this.index) {
             _this.index.forEach(function (id) {
@@ -189,9 +189,12 @@
     };
 
     return {
-      define: function (name) {
+      define: function (name, idKey) {
+        if (angular.isUndefined(idKey)) {
+          idKey = 'id';
+        }
         var myModel = Object.create(Model);
-        myModel.setName(name);
+        myModel.init(name, idKey);
         return myModel;
       }
     };
